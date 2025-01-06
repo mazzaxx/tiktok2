@@ -14,6 +14,15 @@ export function EmailForm({ onSubmit }: EmailFormProps) {
 
   return (
     <div className="max-w-md w-full mx-auto text-center">
+      {/* Logo do TikTok */}
+      <div className="mb-6 flex justify-center">
+        <img
+          src="/tiktok.svg" // Caminho da logo no diretório público
+          alt="TikTok Logo"
+          className="w-22 h-20" // Tamanho ajustável
+        />
+      </div>
+
       <h1 className="text-2xl font-bold mb-2">
         Você foi convidado por um amigo e ganhou R$ 100,00
       </h1>

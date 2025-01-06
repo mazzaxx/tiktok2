@@ -1,3 +1,6 @@
+import { useEffect } from 'react';
+import confetti from 'canvas-confetti';
+
 interface RewardModalProps {
   reward: number;
   onContinue: () => void;
@@ -13,6 +16,23 @@ export function RewardModal({ reward, onContinue, onWithdraw, showWithdrawButton
   const buttonClass = isLastQuestion 
     ? 'bg-white text-[#9333EA] hover:bg-gray-100'
     : 'bg-[#FF3B5C] text-white hover:bg-[#ff2c4f]';
+
+  // Disparar confetes e tocar som ao abrir o modal
+  useEffect(() => {
+    // Confetes
+    confetti({
+      particleCount: 100,
+      spread: 70,
+      origin: { y: 0.6 },
+      colors: ['#FF3B5C', '#FFC107', '#4CAF50', '#2196F3'],
+    });
+
+    // Tocar som de dinheiro
+    const audio = new Audio('/money.mp3'); // Caminho para o som
+    audio.play().catch((error) => {
+      console.error('Erro ao tocar o som:', error);
+    });
+  }, []);
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center backdrop-blur-sm z-50">
