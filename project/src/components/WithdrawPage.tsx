@@ -23,7 +23,7 @@ export function WithdrawPage({ balance, onBack }: WithdrawPageProps) {
 
     // Simula carregamento e redireciona
     setTimeout(() => {
-      window.location.href = 'https://go.perfectpay.com.br/PPU38CPD7IK';
+      window.location.href = 'https://go.perfectpay.com.br/PPU38CPDP3L';
     }, 5000);
   };
 
